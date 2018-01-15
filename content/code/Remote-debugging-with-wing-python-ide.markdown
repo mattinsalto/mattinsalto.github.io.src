@@ -18,7 +18,7 @@ http://wingware.com/downloads/wing-personal
 
 * Enable ssh remote access in the rpi
 
-If you don't have enabled yet, follow the instructions at
+If you don't have enabled it yet, follow the instructions at
 [Raspberry pi official docs][raspberry-ssh]
 
 Once enabled, to know your rpi IP type below command in the rpi terminal
