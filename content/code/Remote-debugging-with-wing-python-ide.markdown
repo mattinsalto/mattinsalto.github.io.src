@@ -11,13 +11,17 @@ Although is posible to program in the Raspberry Pi (rpi onwards), is a little bi
 
 There are some options for Python remote debugging on a rpi, but only few of them are free and posible from a Mac. The option I'm gonna write about, is the one provided by Wingware Wing Personal (free editon) Python IDE. You can find the information about rpi Python remote debugging in it's [website][wingware-remote-dbg], but it has some broken links and there are areas not covered by specific solutions that let the reader choose her preferred one. I'll try to give a complete solution here.
 
-* Download [Wing Python IDE][wingware-download]
+
+* Download Wing Python IDE
+
+http://wingware.com/downloads/wing-personal
+
 * Enable ssh remote access in the rpi
 
 If you don't have enabled yet, follow the instructions at
 [Raspberry pi official docs][raspberry-ssh]
 
-Once enabled, to know your rpi ip type in the rpi terminal
+Once enabled, to know your rpi IP type below command in the rpi terminal
 ```sh
 $ ifconfig
 ```
@@ -75,6 +79,7 @@ $ sudo service networking restart
 ```
 
 * Generate ssh public / private key pair 
+
 We don't want to be promted for a password every time we want to execute a command in the rpi. We can generate a public and private key pair and put the public key in the rpi to trust the connection without promting for password.
 
 In Mac Terminal type (leave it empty when asks for password protection)
@@ -88,6 +93,7 @@ Now copy the contents of id_rsa.pub to /home/pi/.ssh/authorized_keys as a new li
 For now on, you can ssh your rpi from the Mac without password. This also means you can copy files from the Mac to the rpi via scp without password promting.
 
 * Download Wingware remote debugger to the raspberry pi
+
 At the time of writing the last version of Wing Python IDE is 6.0.9. If it has changed, [here you have][wingware-remote-dbg] the root of the download directory for the different versions. Copy the link to your version of wingide-debugger-raspbian and ssh your rpi:
 
 ```sh
@@ -105,43 +111,59 @@ $ scp "/Users/YourUser/Library/Application Support/Wing Personal/v6/wingdebugpw"
 ```
 
 * Create a new Wing Pyhton IDE project
+
 In this example we will name it PythonRemoteDebugTest 
 and locate it at 
 */Users/YourUser/src/PythonRemoteDebugTest*
 Add a new python script to your project: 
 
 *main.py*
-{{< highlight python "linenos=table" >}}
+{{<highlight python "linenos=table">}}
 name = input('What is your name? ')
 print('Hello {}'.format(name))
-{{< / highlight >}}
+{{</highlight>}}
 
 Run it locally to ensure it works as expected
 
 * Map local directory with a remote one
-Create a directory in the rpi to host your python proyects
+
+Create a directory in the rpi to host your python proyects.
 You can execute a remote command via ssh from the Mac Terminal without the need of an open ssh sesssion
+
 ```sh
 $ ssh pi@192.168.1.91 "mkdir /home/pi/python"
 ```
+In Wing Python IDE go to 
 
 Preferences -> Debugger -> Advanced
-Scroll down to *Location Map*, select de existing line and pulse *edit button*
-Leave remote ip as 127.0.0.1 because we will set a reverse ssh tunnel so will look like the connection comes from localhost. Specify a mapping and set remote to
+
+Scroll down to *Location Map*, select de existing line and pulse *edit button*.
+
+Leave remote IP as 127.0.0.1 because we will set a reverse ssh tunnel so will look like the connection comes from localhost. 
+
+Specify a mapping and set remote to
+
 /home/pi/python 
+
 and local to 
+
 /Users/mattinsalto/src/Python
 
 * Create a reverse ssh tunnel between your Mac and Rpi
+
 ```sh
 $ ssh -N -R 50005:localhost:50005 pi@192.168.1.91
 ```
 * Copy your project files to rpi
+
 ```sh
 $ scp -r /Users/mattinsalto/src/Python/PythonRemoteDebugTest pi@192.168.1.91:/home/pi/python
 ```
 * Start remote debugging setting desired python version and calling wingdb script 
+
+```sh
 $ ssh pi@192.168.1.91 "export WINGDB_PYTHON=/usr/bin/python3 && sudo -E /home/pi/wing-rmt-dbgr/wingdb /home/pi/python/PythonRemoteDebugTest/main.py"
+```
 
 [wingware-download]: http://wingware.com/downloads/wing-personal
 [wingware-remote-dbg]: http://wingware.com/pub/wingide/

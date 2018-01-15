@@ -96,7 +96,7 @@ To connect at startup edit
 and add this line
 ```sh
 iface ppp0 inet wvdial
-	provider movistar
+    provider movistar
 ```
 As the modem takes some time for initialization we could delay the dialing in
 ```sh
