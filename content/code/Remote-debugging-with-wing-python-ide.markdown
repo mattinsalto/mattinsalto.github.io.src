@@ -41,11 +41,11 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         RX errors 0  dropped 0  overruns 0  frame 0
         TX packets 48  bytes 6280 (6.1 KiB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-````
+```
 
 When using a wired connection it will be eth0, if wireless, should be wlan0
 
-If everything is OK, you can connect to rpi with
+If everything is OK, you can connect to rpi with:
 ```sh
 $ ssh pi@your-rpi-ip
 ```
