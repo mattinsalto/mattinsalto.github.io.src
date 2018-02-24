@@ -2,7 +2,7 @@
 title: Huawei E220 modem on Raspberry pi
 date: 2017-12-01T18:10:14+01:00
 featuredImage: "images/HuaweiRaspberry.jpg"
-categories: []
+categories: ['Tutorials']
 tags: ['raspberry pi', 'huawei', '3g-modem', 'movistar', 'freedompop']
 author: "Martin Garmendia"
 noSummary: false
